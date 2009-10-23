@@ -12,6 +12,10 @@ module SpecRig
       @destination.mkdir
     end
 
+    def path
+      @directory
+    end
+
     def entries
       @directory.entries.map { |e| e.to_s }
     end
