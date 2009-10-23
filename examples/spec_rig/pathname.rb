@@ -7,4 +7,11 @@ describe Pathname do
     pathname.write "somecontent"
     pathname.read.should == "somecontent"
   end
+
+  it "should create files in subdirectories" do
+    workspace = SpecRig::Workspace.new
+    pathname = Pathname.new(workspace).join("subdir/file")
+    pathname.write "content"
+    pathname.read.should == "content"
+  end
 end

@@ -5,12 +5,12 @@ describe "mimegraph create" do
     workspace = SpecRig::Workspace.new
 
     workspace.source.join("file1").write("content1")
-    workspace.source.join("file2").write("content2")
+    workspace.source.join("subdir", "file2").write("content2")
 
     mimeograph(:create, workspace.source, workspace.destination).should be_successful
 
     workspace.destination.join("file1").read.should == "content1"
-    workspace.destination.join("file2").read.should == "content2"
+    workspace.destination.join("subdir", "file2").read.should == "content2"
   end
 
   def mimeograph(*args)
