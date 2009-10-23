@@ -22,7 +22,7 @@ describe "mimegraph create" do
   it "should preserve timestamps" do
     source.join("file").create.utime Time.now, Time.parse("12/2/2008")
     mimeograph(:create, source, destination).should be_successful
-    destination.join("file").stat.mtime.should == source.join("file").stat.mtime
+    destination.join("file").mtime.should == source.join("file").mtime
   end
 
   it "should preserve symlinks" do
