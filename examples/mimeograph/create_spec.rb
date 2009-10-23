@@ -1,9 +1,9 @@
 require File.dirname(__FILE__) + "/../spec_helper"
 
 describe "mimegraph create" do
-  it "should copy all files from source to destination" do
-    workspace = SpecRig::Workspace.new
+  include SpecRig::Helpers
 
+  it "should copy all files from source to destination" do
     workspace.source.join("file1").create("content1")
     workspace.source.join("subdir", "file2").create("content2")
 
@@ -14,8 +14,6 @@ describe "mimegraph create" do
   end
 
   it "should perserve special permissions" do
-    workspace = SpecRig::Workspace.new
-
     workspace.source.join("file").create.chmod(0666)
 
     mimeograph(:create, workspace.source, workspace.destination).should be_successful
