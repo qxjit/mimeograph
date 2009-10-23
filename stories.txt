@@ -1,0 +1,9 @@
+* push an initial image to the server
+* push changes to the server
+* pull newest changes from the server
+* pull specified version from the server
+* ignore specific files when pushing / pulling changes
+* ignore specific directories when pushing / pulling changes
+
+- See all versions available on the server
+- View changes in a version

@@ -1,0 +1,13 @@
+* use existing machine as basis for base image
+* create an up to date machine quickly with minimal interaction
+* propagate changes made on any machine to all others over the network
+* allow each machine to control when changes are propagated to it
+* allow controlled differences between machines (machine names, working area, etc)
+* roll back problematic changes
+* return machines to a known state automatically (daily, weekly, etc)
+* recovery from failed updates
+* each machine is complete and self-contained
+
+? Delay pushing changes off source machine
+? Updating target machine / disk
+
