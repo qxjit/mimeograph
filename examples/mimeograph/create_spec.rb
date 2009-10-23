@@ -13,12 +13,18 @@ describe "mimegraph create" do
     workspace.destination.join("subdir", "file2").read.should == "content2"
   end
 
-  it "should perserve special permissions" do
+  it "should perserve permissions" do
     workspace.source.join("file").create.chmod(0666)
 
     mimeograph(:create, workspace.source, workspace.destination).should be_successful
 
     (workspace.destination.join("file").stat.mode & 0777).should == 0666
+  end
+
+  it "should preserve timestamps" do
+    workspace.source.join("file").create.utime Time.now, Time.parse("12/2/2008")
+    mimeograph(:create, workspace.source, workspace.destination).should be_successful
+    workspace.destination.join("file").stat.mtime.should == workspace.source.join("file").stat.mtime
   end
 
   def mimeograph(*args)
