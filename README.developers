@@ -1,0 +1,12 @@
+Mimeograph is mostly a wrapper over rsync.  Because it is used to preserve the
+whole system, it needs super use privileges.  It is expected than end users
+will use sudo to run the mimeograph executable.  Because many of the mimeograph
+tests actually run rsync against real files, it is necessary for the tests to
+be able to run mimeograph with super user privileges without needing to enter a
+password.  In order to run the mimeograph tests you will need to edit your
+/etc/sudoers file to allow a couple of commands to be run without a password.
+If you already have sudo access to run all commands USING a password, you
+probably want a line that looks something like this:
+
+<username> ALL=(ALL) NOPASSWD: <path to project>/examples_lib/spec_rig/make_device, <path to project>/bin/mimeograph
+
