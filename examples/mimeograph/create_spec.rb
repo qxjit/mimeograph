@@ -32,6 +32,12 @@ describe "mimegraph create" do
     destination.join("symlink").readlink.to_s.should == "target"
   end
 
+  it "should preserve special files" do
+    SpecRig::Command.new("mkfifo", source + "fifo").should be_successful
+    mimeograph(:create, source, destination).should be_successful
+    destination.join("fifo").should be_pipe
+  end
+
   def mimeograph(*args)
     mimeograph_path = File.expand_path File.dirname(__FILE__) + "/../../bin/mimeograph"
     SpecRig::Command.new mimeograph_path, *args
