@@ -33,13 +33,19 @@ describe "mimegraph create" do
   end
 
   it "should preserve special files" do
-    SpecRig::Command.new("mkfifo", source + "fifo").should be_successful
+    source.join("pipe").make_pipe
     mimeograph(:create, source, destination).should be_successful
-    destination.join("fifo").should be_pipe
+    destination.join("pipe").should be_pipe
+  end
+  
+  it "should preserve device files" do
+    source.join("device").make_chardev
+    mimeograph(:create, source, destination).should be_successful
+    destination.join("device").should be_chardev
   end
 
   def mimeograph(*args)
     mimeograph_path = File.expand_path File.dirname(__FILE__) + "/../../bin/mimeograph"
-    SpecRig::Command.new mimeograph_path, *args
+    SpecRig::Command.new "sudo", mimeograph_path, *args
   end
 end

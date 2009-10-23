@@ -9,17 +9,22 @@ describe Pathname do
   end
 
   it "should allow files to be created with content" do
-    pathname = workspace.path + "test_file"
-    pathname.create("somecontent").read.should == "somecontent"
+    workspace.path.join("file").create("somecontent").read.should == "somecontent"
   end
 
   it "should create files in subdirectories" do
-    pathname = workspace.path.join("subdir/file")
-    pathname.create("content").read.should == "content"
+    workspace.path.join("subdir/file").create("content").read.should == "content"
   end
 
   it "should create an empty file when no content is specified" do
-    pathname = workspace.path + "file"
-    pathname.create.read.should == ""
+    workspace.path.join("file").create.read.should == ""
+  end
+
+  it "should make a pipe" do
+    workspace.path.join("pipe").make_pipe.should be_pipe
+  end
+
+  it "should make a chardev" do
+    workspace.path.join("chardev").make_chardev.should be_chardev
   end
 end

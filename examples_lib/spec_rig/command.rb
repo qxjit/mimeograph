@@ -20,6 +20,10 @@ module SpecRig
       result.output
     end
 
+    def run_successfully
+      raise "#{inspect} failed:\n#{output}" unless successful?
+    end
+
     def result
       @result ||= begin
         output = `#{self} 2>&1`
