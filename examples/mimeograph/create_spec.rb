@@ -43,6 +43,12 @@ describe "mimegraph create" do
     mimeograph(:create, source, destination).should be_successful
     destination.join("device").should be_chardev
   end
+  
+  it "should preserve ownership" do
+    source.join("file").create
+    mimeograph(:create, source, destination).should be_successful
+    destination.join("file").stat.uid.should == source.join("file").stat.uid
+  end
 
   def mimeograph(*args)
     mimeograph_path = File.expand_path File.dirname(__FILE__) + "/../../bin/mimeograph"
