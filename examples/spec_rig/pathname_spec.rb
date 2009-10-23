@@ -27,4 +27,10 @@ describe Pathname do
   it "should make a chardev" do
     workspace.path.join("chardev").make_chardev.should be_chardev
   end
+
+  it "should change group id" do
+    workspace.path.join("file1").create
+    workspace.path.join("file2").create.change_group_id
+    workspace.path.join("file2").stat.gid.should_not == workspace.path.join("file1").stat.gid
+  end
 end

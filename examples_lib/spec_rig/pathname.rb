@@ -16,4 +16,11 @@ Pathname.class_eval do
     SpecRig::Command.new("sudo", File.dirname(__FILE__) + "/make_device", self).run_successfully
     self
   end
+
+  def change_group_id
+    new_gid = (Process.groups - [Process.gid]).first
+    raise "Unable to find group id other than #{Process.gid} for current process, can't create test file with a different group id" unless new_gid
+    chown nil, new_gid
+    self
+  end
 end

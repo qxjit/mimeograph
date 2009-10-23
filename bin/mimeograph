@@ -1,2 +1,2 @@
 #!/usr/bin/env ruby
-system "rsync", "-r", "--perms", "--times", "--links", "--specials", "--devices", "--owner", ARGV[1] + "/", ARGV[2]
+system "rsync", "-r", "--perms", "--times", "--links", "--specials", "--devices", "--owner", "--group", ARGV[1] + "/", ARGV[2]

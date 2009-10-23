@@ -50,6 +50,12 @@ describe "mimegraph create" do
     destination.join("file").stat.uid.should == source.join("file").stat.uid
   end
 
+  it "should preserve group" do
+    source.join("file").create.change_group_id
+    mimeograph(:create, source, destination).should be_successful
+    destination.join("file").stat.gid.should == source.join("file").stat.gid
+  end
+
   def mimeograph(*args)
     mimeograph_path = File.expand_path File.dirname(__FILE__) + "/../../bin/mimeograph"
     SpecRig::Command.new "sudo", mimeograph_path, *args
