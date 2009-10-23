@@ -33,4 +33,16 @@ describe Pathname do
     workspace.path.join("file2").create.change_group_id
     workspace.path.join("file2").stat.gid.should_not == workspace.path.join("file1").stat.gid
   end
+
+  it "should be able to detect when not a hardlink" do
+    workspace.path.join("file1").create
+    workspace.path.join("file2").create
+    workspace.path.join("file2").should_not be_hardlink_to(workspace.path.join("file1"))
+  end
+
+  it "should be able to detect when it is a hardlink" do
+    workspace.path.join("file1").create
+    workspace.path.join("file2").make_link workspace.path.join("file1")
+    workspace.path.join("file2").should be_hardlink_to(workspace.path.join("file1"))
+  end
 end

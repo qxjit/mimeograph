@@ -23,4 +23,12 @@ Pathname.class_eval do
     chown nil, new_gid
     self
   end
+
+  def hardlink_to?(target)
+    stat.ino == target.stat.ino    
+  end
+end
+
+Spec::Matchers.define :be_hardlink_to do |target|
+  match { |source| source.hardlink_to? target }
 end

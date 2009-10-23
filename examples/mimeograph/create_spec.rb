@@ -32,6 +32,15 @@ describe "mimegraph create" do
     destination.join("symlink").readlink.to_s.should == "target"
   end
 
+  it "should preserve hardlinks" do
+    source.join("file1").create
+    source.join("file2").make_link source.join("file1")
+
+    mimeograph(:create, source, destination).should be_successful
+
+    destination.join("file2").should be_hardlink_to(destination.join("file1"))
+  end
+
   it "should preserve special files" do
     source.join("pipe").make_pipe
     mimeograph(:create, source, destination).should be_successful

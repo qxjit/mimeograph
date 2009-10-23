@@ -41,9 +41,7 @@ module SpecRig
 end
 
 Spec::Matchers.define :be_successful do 
-  match do |command|
-    command.successful?
-  end
+  match { |command| command.successful? }
 
   failure_message_for_should do |command|
     "Expected #{command.inspect} to succeed, but failed with output:\n#{command.output}"
