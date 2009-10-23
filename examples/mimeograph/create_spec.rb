@@ -26,18 +26,14 @@ describe "mimegraph create" do
   end
 
   it "should preserve symlinks" do
-    source.join("symlink").make_symlink("target")
+    source.join("symlink").make_symlink source.join("target").basename
     mimeograph(:create, source, destination).should be_successful
-    destination.join("symlink").should be_symlink
-    destination.join("symlink").readlink.to_s.should == "target"
+    destination.join("symlink").should be_symlink_to(destination.join("target").basename)
   end
 
   it "should preserve hardlinks" do
-    source.join("file1").create
-    source.join("file2").make_link source.join("file1")
-
+    source.join("file2").make_link source.join("file1").create
     mimeograph(:create, source, destination).should be_successful
-
     destination.join("file2").should be_hardlink_to(destination.join("file1"))
   end
 

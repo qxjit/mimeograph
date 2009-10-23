@@ -34,6 +34,18 @@ describe Pathname do
     workspace.path.join("file2").stat.gid.should_not == workspace.path.join("file1").stat.gid
   end
 
+  it "should be able to detect when not a symlink" do
+    workspace.path.join("file1").create
+    workspace.path.join("file2").create
+    workspace.path.join("file2").should_not be_symlink_to(workspace.path.join("file1"))
+  end
+
+  it "should be able to detect when it is a symlink" do
+    workspace.path.join("file1").create
+    workspace.path.join("file2").make_symlink workspace.path.join("file1")
+    workspace.path.join("file2").should be_symlink_to(workspace.path.join("file1"))
+  end
+
   it "should be able to detect when not a hardlink" do
     workspace.path.join("file1").create
     workspace.path.join("file2").create

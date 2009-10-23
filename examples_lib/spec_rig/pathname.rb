@@ -27,8 +27,16 @@ Pathname.class_eval do
   def hardlink_to?(target)
     stat.ino == target.stat.ino    
   end
+
+  def symlink_to?(target)
+    symlink? && readlink == target
+  end
 end
 
 Spec::Matchers.define :be_hardlink_to do |target|
   match { |source| source.hardlink_to? target }
+end
+
+Spec::Matchers.define :be_symlink_to do |target|
+  match { |source| source.symlink_to? target }
 end
