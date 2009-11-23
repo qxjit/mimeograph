@@ -10,4 +10,5 @@
 
 ? Delay pushing changes off source machine
 ? Updating target machine / disk
+? Annotate change set with instructions to puller
 
