@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + "/../spec_helper"
 
-describe "mimegraph create" do
+describe "mimeograph create" do
   include SpecRig::Helpers
 
   it "should copy all files from source to destination" do
@@ -13,7 +13,7 @@ describe "mimegraph create" do
     destination.join("subdir", "file2").read.should == "content2"
   end
 
-  it "should perserve permissions" do
+  it "should preserve permissions" do
     source.join("file").create.chmod(0666)
     mimeograph(:create, source, destination).should be_successful
     (destination.join("file").stat.mode & 0777).should == 0666
@@ -59,6 +59,30 @@ describe "mimegraph create" do
     source.join("file").create.change_group_id
     mimeograph(:create, source, destination).should be_successful
     destination.join("file").stat.gid.should == source.join("file").stat.gid
+  end
+
+  it "should honor specified file exclusions" do
+    source.join("file1").create("content1")
+    source.join("file2").create("content2")
+    source.join("file3.bak").create("content3")
+	exclusions.add_pattern("file2")
+	exclusions.add_pattern("*.bak")
+    mimeograph(:create, source, destination, exclusions.path).should be_successful
+    File.exists?(destination.join("file1")).should == true
+    File.exists?(destination.join("file2")).should == false
+    File.exists?(destination.join("file3.bak")).should == false
+  end
+
+  it "should honor specified directory exclusions" do
+    source.join("subdir1", "file1").create("content1")
+    source.join("subdir2", "file2").create("content2")
+    source.join("subdir3", "file3").create("content3")
+	exclusions.add_pattern("subdir2/")
+	exclusions.add_pattern("*3*")
+    mimeograph(:create, source, destination, exclusions.path).should be_successful
+    File.exists?(destination.join("subdir1", "file1")).should == true
+    File.exists?(destination.join("subdir2", "file2")).should == false
+    File.exists?(destination.join("subdir3", "file3")).should == false
   end
 
   def mimeograph(*args)

@@ -2,7 +2,7 @@ require 'tmpdir'
 
 module SpecRig
   class Workspace
-    attr_reader :source, :destination
+    attr_reader :source, :destination, :exclusions
 
     def initialize
       @directory = Pathname.new(Dir.mktmpdir)
@@ -10,6 +10,7 @@ module SpecRig
       @source.mkdir
       @destination = @directory + "destination"
       @destination.mkdir
+	  @exclusions = Exclusions.new
     end
 
     def path

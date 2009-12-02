@@ -11,5 +11,9 @@ module SpecRig
     def destination
       workspace.destination
     end
+
+    def exclusions
+      workspace.exclusions
+    end
   end
 end
