@@ -33,10 +33,10 @@ Pathname.class_eval do
   end
 end
 
-Spec::Matchers.define :be_hardlink_to do |target|
+RSpec::Matchers.define :be_hardlink_to do |target|
   match { |source| source.hardlink_to? target }
 end
 
-Spec::Matchers.define :be_symlink_to do |target|
+RSpec::Matchers.define :be_symlink_to do |target|
   match { |source| source.symlink_to? target }
 end

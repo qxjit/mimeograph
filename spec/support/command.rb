@@ -40,7 +40,7 @@ module SpecRig
   end
 end
 
-Spec::Matchers.define :be_successful do 
+RSpec::Matchers.define :be_successful do 
   match { |command| command.successful? }
 
   failure_message_for_should do |command|

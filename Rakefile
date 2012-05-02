@@ -1,10 +1,11 @@
 require 'rake'
-require 'spec/rake/spectask'
+require 'rspec/core/rake_task'
 
-task :default => :examples
+task :default => :spec
 
-desc "Run all examples"
-Spec::Rake::SpecTask.new('examples') do |t|
-  t.spec_files = FileList['examples/**/*.rb']
+desc "Run all specs"
+RSpec::Core::RakeTask.new(:spec) do |t|
+  t.verbose = false
+  t.rspec_opts = "--color"
 end
 
