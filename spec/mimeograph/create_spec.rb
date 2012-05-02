@@ -65,8 +65,8 @@ describe "mimeograph create" do
     source.join("file1").create("content1")
     source.join("file2").create("content2")
     source.join("file3.bak").create("content3")
-	exclusions.add_pattern("file2")
-	exclusions.add_pattern("*.bak")
+    exclusions.add_pattern("file2")
+    exclusions.add_pattern("*.bak")
     mimeograph(:create, source, destination, exclusions.path).should be_successful
     File.exists?(destination.join("file1")).should == true
     File.exists?(destination.join("file2")).should == false
@@ -77,8 +77,8 @@ describe "mimeograph create" do
     source.join("subdir1", "file1").create("content1")
     source.join("subdir2", "file2").create("content2")
     source.join("subdir3", "file3").create("content3")
-	exclusions.add_pattern("subdir2/")
-	exclusions.add_pattern("*3*")
+    exclusions.add_pattern("subdir2/")
+    exclusions.add_pattern("*3*")
     mimeograph(:create, source, destination, exclusions.path).should be_successful
     File.exists?(destination.join("subdir1", "file1")).should == true
     File.exists?(destination.join("subdir2", "file2")).should == false
