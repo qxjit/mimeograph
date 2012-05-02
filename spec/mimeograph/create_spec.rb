@@ -42,13 +42,13 @@ describe "mimeograph create" do
     mimeograph(:create, source, destination).should be_successful
     destination.join("pipe").should be_pipe
   end
-  
+
   it "should preserve device files" do
     source.join("device").make_chardev
     mimeograph(:create, source, destination).should be_successful
     destination.join("device").should be_chardev
   end
-  
+
   it "should preserve ownership" do
     source.join("file").create
     mimeograph(:create, source, destination).should be_successful

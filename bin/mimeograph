@@ -1,6 +1,25 @@
 #!/usr/bin/env ruby
-if ARGV[3]
-  system "rsync", "-r", "--perms", "--times", "--links", "--hard-links", "--specials", "--devices", "--owner", "--group", "--exclude-from=" + ARGV[3], ARGV[1] + "/", ARGV[2]
-else
-  system "rsync", "-r", "--perms", "--times", "--links", "--hard-links", "--specials", "--devices", "--owner", "--group", ARGV[1] + "/", ARGV[2]
-end
+
+ALWAYS_ON_OPTIONS = %w(
+  -r
+ --perms
+ --times
+ --links
+ --hard-links
+ --specials
+ --devices
+ --owner
+ --group
+)
+
+command, source, dest, exclusions_file = ARGV
+
+exclusion_options = if exclusions_file
+                      ["--exclude-from=" + exclusions_file]
+                    else
+                      []
+                    end
+
+options = ALWAYS_ON_OPTIONS + exclusion_options + [source + "/", dest]
+
+system "rsync", *options
