@@ -84,9 +84,4 @@ describe "mimeograph push" do
     File.exists?(destination.join("subdir2", "file2")).should == false
     File.exists?(destination.join("subdir3", "file3")).should == false
   end
-
-  def mimeograph(*args)
-    mimeograph_path = File.expand_path File.dirname(__FILE__) + "/../../bin/mimeograph"
-    SpecRig::Command.new "sudo", mimeograph_path, *args
-  end
 end

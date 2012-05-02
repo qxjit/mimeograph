@@ -1,25 +1,56 @@
 #!/usr/bin/env ruby
 
-ALWAYS_ON_OPTIONS = %w(
-  -r
- --perms
- --times
- --links
- --hard-links
- --specials
- --devices
- --owner
- --group
-)
+module Mimeograph
+  class Command < Struct.new(:args)
+    ALWAYS_ON_OPTIONS = %w(
+      -r
+     --perms
+     --times
+     --links
+     --hard-links
+     --specials
+     --devices
+     --owner
+     --group
+    )
 
-command, source, dest, exclusions_file = ARGV
+    def run
+      source, dest, exclusions_file = args
 
-exclusion_options = if exclusions_file
-                      ["--exclude-from=" + exclusions_file]
-                    else
-                      []
-                    end
+      exclusion_options = if exclusions_file
+                            ["--exclude-from=" + exclusions_file]
+                          else
+                            []
+                          end
 
-options = ALWAYS_ON_OPTIONS + exclusion_options + [source + "/", dest]
+      options = ALWAYS_ON_OPTIONS + exclusion_options + command_options + [source + "/", dest]
 
-system "rsync", *options
+      system "rsync", *options
+    end
+  end
+
+  class Push < Command
+    def command_options
+      []
+    end
+  end
+
+  class Diff < Command
+    def command_options
+      ["--dry-run", "--verbose"]
+    end
+  end
+end
+
+command_name, *args = ARGV
+
+command_class = case command_name
+                when "push" then Mimeograph::Push
+                when "diff" then Mimeograph::Diff
+                else
+                  puts "Unknowne command: #{command_name}"
+                  exit 1
+                end
+
+command_class.new(args).run
+
