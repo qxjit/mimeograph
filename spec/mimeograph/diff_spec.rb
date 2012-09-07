@@ -24,7 +24,7 @@ describe "mimeograph diff" do
 
     mimeograph(:diff, source, destination)
 
-    File.read(cwd.join("mimeograph.diff")).should include "file1"
+    diff_contents.should include "file1"
   end
 
   it "each non blank line in diff file should be file from source" do
@@ -32,7 +32,7 @@ describe "mimeograph diff" do
 
     mimeograph(:diff, source, destination)
 
-    File.read(cwd.join("mimeograph.diff")).each_line do |line|
+    diff_contents.each_line do |line|
       if !line.strip.empty?
         source.join(line.strip).should exist
       end

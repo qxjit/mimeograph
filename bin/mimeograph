@@ -54,7 +54,13 @@ module Mimeograph
 
   class Push < Command
     def command_options
-      []
+      %w()
+    end
+  end
+
+  class Apply < Command
+    def command_options
+      %w(--include-from=mimeograph.diff --exclude=**)
     end
   end
 
@@ -83,6 +89,7 @@ command_name, *args = ARGV
 command_class = case command_name
                 when "push" then Mimeograph::Push
                 when "diff" then Mimeograph::Diff
+                when "apply" then Mimeograph::Apply
                 else
                   puts "Unknown command: #{command_name}"
                   exit 1
