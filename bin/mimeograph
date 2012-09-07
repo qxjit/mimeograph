@@ -16,6 +16,7 @@ module Mimeograph
      --devices
      --owner
      --group
+     --checksum
     )
 
     def output
