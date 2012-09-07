@@ -4,6 +4,10 @@ module SpecRig
       @workspace ||= Workspace.new
     end
 
+    def cwd
+      workspace.path
+    end
+
     def source
       workspace.source
     end

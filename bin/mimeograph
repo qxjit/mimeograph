@@ -1,7 +1,11 @@
 #!/usr/bin/env ruby
 
+require 'fileutils'
+
 module Mimeograph
   class Command < Struct.new(:args)
+    attr_reader :exit_code
+
     ALWAYS_ON_OPTIONS = %w(
       -r
      --perms
@@ -14,6 +18,10 @@ module Mimeograph
      --group
     )
 
+    def output
+      @output ||= ""
+    end
+
     def run
       source, dest, exclusions_file = args
 
@@ -25,7 +33,22 @@ module Mimeograph
 
       options = ALWAYS_ON_OPTIONS + exclusion_options + command_options + [source + "/", dest]
 
-      system "rsync", *options
+      puts "Running rsync #{options.join(' ')}"
+
+      IO.popen ["rsync", *options] do |io|
+        io.each_line do |line|
+          output << line
+          output << "\n"
+          puts line
+          handle_line line
+        end
+      end
+
+      @exit_code = $?.exitstatus
+    end
+
+    def handle_line(line)
+
     end
   end
 
@@ -37,7 +60,20 @@ module Mimeograph
 
   class Diff < Command
     def command_options
-      ["--dry-run", "--verbose"]
+      %w(--dry-run --verbose --out-format file:\ %n)
+    end
+
+    def run
+      File.open 'mimeograph.diff', 'w' do |diff_file|
+        @diff_file = diff_file
+        super
+      end
+    end
+
+    def handle_line(line)
+      if line =~ /^file: /
+        @diff_file.puts line[6..-1]
+      end
     end
   end
 end
@@ -48,9 +84,9 @@ command_class = case command_name
                 when "push" then Mimeograph::Push
                 when "diff" then Mimeograph::Diff
                 else
-                  puts "Unknowne command: #{command_name}"
+                  puts "Unknown command: #{command_name}"
                   exit 1
                 end
 
-command_class.new(args).run
+exit command_class.new(args).run
 

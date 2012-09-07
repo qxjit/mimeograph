@@ -84,4 +84,8 @@ describe "mimeograph push" do
     File.exists?(destination.join("subdir2", "file2")).should == false
     File.exists?(destination.join("subdir3", "file3")).should == false
   end
+
+  it "should fail if source doesn't exist" do
+    mimeograph(:push, 'foobar', destination).should_not be_successful
+  end
 end

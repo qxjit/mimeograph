@@ -10,7 +10,7 @@ module SpecRig
       @source.mkdir
       @destination = @directory + "destination"
       @destination.mkdir
-	  @exclusions = Exclusions.new
+      @exclusions = Exclusions.new
     end
 
     def path

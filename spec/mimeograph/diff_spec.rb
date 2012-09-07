@@ -18,5 +18,26 @@ describe "mimeograph diff" do
 
     mimeograph(:diff, source, destination).output.should include "file1"
   end
+
+  it "save files that would be copied to a file" do
+    source.join("file1").create("content1")
+
+    mimeograph(:diff, source, destination)
+
+    File.read(cwd.join("mimeograph.diff")).should include "file1"
+  end
+
+  it "each non blank line in diff file should be file from source" do
+    source.join("file1").create("content1")
+
+    mimeograph(:diff, source, destination)
+
+    File.read(cwd.join("mimeograph.diff")).each_line do |line|
+      if !line.strip.empty?
+        source.join(line.strip).should exist
+      end
+    end
+  end
 end
+
 
