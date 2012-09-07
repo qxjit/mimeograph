@@ -60,7 +60,7 @@ module Mimeograph
 
   class Apply < Command
     def command_options
-      %w(--include-from=mimeograph.diff --exclude=**)
+      %w(--files-from=mimeograph.diff)
     end
   end
 
