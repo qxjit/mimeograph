@@ -36,7 +36,7 @@ module Mimeograph
 
       puts "Running rsync #{options.join(' ')}"
 
-      IO.popen ["rsync", *options] do |io|
+      IO.popen ["sudo", "rsync", *options] do |io|
         io.each_line do |line|
           output << line
           output << "\n"
